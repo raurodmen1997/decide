@@ -26,7 +26,7 @@ class PostProcView(APIView):
                 valor = len(options) - posicion + 1
                 suma_total_opcion += valor
             salida[opcion[option]] = suma_total_opcion
-        return salida
+        return Response(salida)
 
 
 
