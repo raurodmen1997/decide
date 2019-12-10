@@ -16,6 +16,22 @@ class PostProcView(APIView):
         out.sort(key=lambda x: -x['postproc'])
         return Response(out)
 
+
+    #Recuento borda. Realizado por Raúl.
+    def borda(self, options):
+        salida = {}
+        for opcion in options:
+            suma_total_opcion = 0
+            for posicion in opcion[positions].get(opcion[option]):
+                valor = len(options) - posicion + 1
+                suma_total_opcion += valor
+            salida[opcion[option]] = suma_total_opcion
+        return salida
+
+
+
+
+
     def post(self, request):
         """
          * type: IDENTITY | EQUALITY | WEIGHT
