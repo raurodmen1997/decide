@@ -8,24 +8,29 @@ class PostProcView(APIView):
 
     def identity(self, options):
         out = []
+        inputData = {}
+        results = {}  
         numEscaños = 21
 
-        lista = {"A":391000, "B":312000, "C":245034, "D":200001, "E":98562, "F":20145}
+        for opt in options:
+            i = opt['number']
+            v = opt['votes']
+            inputData[i] = v
 
         def hareQuotient(votes):
             q = math.floor(votes/numEscaños)
             return q
 
-        def votesSum(lista):
+        def votesSum(allVotes):
             sum = 0
-            for x in lista.values():
+            for x in allVotes.values():
                 sum += x
             return sum
 
-        def seatsAndResidues(lista):
+        def seatsAndResidues(data):
             res = {}
-            quotient = hareQuotient(votesSum(lista))
-            for x in lista.values():
+            quotient = hareQuotient(votesSum(data))
+            for x in data.values():
                 a = []
                 seats = math.floor(x/quotient)
                 residue = x - quotient*seats
@@ -33,8 +38,8 @@ class PostProcView(APIView):
                 a.append(seats)
                 a.append(residue)
 
-                key_list = list(lista.keys()) 
-                val_list = list(lista.values()) 
+                key_list = list(data.keys()) 
+                val_list = list(data.values()) 
                 n = key_list[val_list.index(x)]
 
                 res[n] = a
@@ -69,13 +74,12 @@ class PostProcView(APIView):
 
             return finalDist
 
+        results = residueDistribution(seatsAndResidues(inputData))
 
-        results = residueDistribution(seatsAndResidues(lista))
-
-        for opt in options:
+        for index, opt in enumerate(options, start = 1):
             out.append({
                 **opt,
-                'postproc': opt['votes'],
+                'seats': results.get(index)[0],
             })
 
         out.sort(key=lambda x: -x['postproc'])
