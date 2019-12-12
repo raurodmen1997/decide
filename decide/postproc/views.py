@@ -6,81 +6,92 @@ import copy
 
 class PostProcView(APIView):
 
-    def identity(self, options):
+    # Método de reparto de escaños mediante el Cociente Hare
+    # type: 'HARE'
+    def hare(self, options):
         out = []
         inputData = {}
         results = {}  
-        numEscaños = 21
+        numSeats = 21
+        quotient = 0
 
         for opt in options:
             i = opt['number']
             v = opt['votes']
             inputData[i] = v
 
-        def hareQuotient(votes):
-            q = math.floor(votes/numEscaños)
-            return q
+        totalVotes = self.votesSum(inputData)
+        quotient = math.floor(totalVotes/numSeats)
 
-        def votesSum(allVotes):
-            sum = 0
-            for x in allVotes.values():
-                sum += x
-            return sum
-
-        def seatsAndResidues(data):
-            res = {}
-            quotient = hareQuotient(votesSum(data))
-            for x in data.values():
-                a = []
-                seats = math.floor(x/quotient)
-                residue = x - quotient*seats
-
-                a.append(seats)
-                a.append(residue)
-
-                key_list = list(data.keys()) 
-                val_list = list(data.values()) 
-                n = key_list[val_list.index(x)]
-
-                res[n] = a
-
-            return res
-
-        def residueDistribution(initalDist):
-            distSeats = 0
-            n = 0
-            residues = []
-            finalDist = copy.deepcopy(initalDist)
-            values = finalDist.values()
-
-            for x in values:
-                distSeats += x[0]
-                residues.append(x[1])
-
-            notDistributed = numEscaños - distSeats
-            sortedResidues = residues.copy()
-            sortedResidues.sort(reverse = True)
-
-            while notDistributed > 0:
-                selected = sortedResidues[n]
-                pos = residues.index(selected)
-            
-                residues.pop(pos)
-                notDistributed -= 1
-
-                list(values)[pos][0] += 1
-
-                n += 1
-
-            return finalDist
-
-        results = residueDistribution(seatsAndResidues(inputData))
+        results = self.residueDistribution(self.seatsAndResidues(inputData, quotient), numSeats)
 
         for index, opt in enumerate(options, start = 1):
             out.append({
                 **opt,
                 'seats': results.get(index)[0],
             })
+
+        return Response(out)
+
+    # Simple sumatorio de los votos totales
+    def votesSum(self, allVotes):
+        sum = 0
+        for x in allVotes.values():
+            sum += x
+        return sum       
+
+    # Primera repartición de escaños y cálculo de los votos 
+    # residuo para cada partido
+    def seatsAndResidues(self, data, quotient):
+        res = {}
+        for x in data.values():
+            a = []
+            seats = math.floor(x/quotient)
+            residue = x - quotient*seats
+
+            a.append(seats)
+            a.append(residue)
+
+            key_list = list(data.keys()) 
+            val_list = list(data.values()) 
+            n = key_list[val_list.index(x)]
+
+            res[n] = a
+
+        return res
+
+    # Segunda repatición teniendo en cuenta el nº de escaños 
+    # aún sin repartir y los votos residuos
+    def residueDistribution(self, initalDist, numSeats):
+        distSeats = 0
+        n = 0
+        residues = []
+        finalDist = copy.deepcopy(initalDist)
+        values = finalDist.values()
+
+        for x in values:
+            distSeats += x[0]
+            residues.append(x[1])
+
+        notDistributed = numSeats - distSeats
+        sortedResidues = residues.copy()
+        sortedResidues.sort(reverse = True)
+
+        while notDistributed > 0:
+            selected = sortedResidues[n]
+            pos = residues.index(selected)
+        
+            residues.pop(pos)
+            notDistributed -= 1
+
+            list(values)[pos][0] += 1
+
+            n += 1
+
+        return finalDist
+
+    def identity(self, options):
+        out = [] 
 
         out.sort(key=lambda x: -x['postproc'])
 
@@ -99,11 +110,14 @@ class PostProcView(APIView):
            ]
         """
 
-        t = request.data.get('type', 'IDENTITY')
+        t = request.data.get('type', 'HARE')
         opts = request.data.get('options', [])
 
         if t == 'IDENTITY':
             return self.identity(opts)
+
+        if t == 'HARE':
+            return self.hare(opts)
 
         return Response({})
 
