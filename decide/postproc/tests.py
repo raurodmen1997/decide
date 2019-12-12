@@ -42,3 +42,105 @@ class PostProcTestCase(APITestCase):
 
         values = response.json()
         self.assertEqual(values, expected_result)
+
+
+
+
+
+    #Test recuento BORDA. Realizado por Raúl. VARIOS VOTANTES, EN ESTE CASO, 4 VOTANTES
+    def test_borda(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular', 'positions': [1,1,3,2]},
+                {'option': 'Psoe', 'positions': [2,3,4,3]},
+                {'option': 'Podemos', 'positions': [3,4,1,4]},
+                {'option': 'Ciudadanos', 'positions': [4,2,2,1]},
+            ]
+        }
+
+        expected_result = {
+            'Popular': 13,
+            'Psoe': 8,
+            'Podemos': 8,
+            'Ciudadanos': 11
+            }
+        
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+    #Test recuento BORDA. Realizado por Raúl. SOLO UN VOTANTE
+    def test_borda2(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular', 'positions': [1]},
+                {'option': 'Psoe', 'positions': [2]},
+                {'option': 'Podemos', 'positions': [3]},
+                {'option': 'Ciudadanos', 'positions': [4]},
+            ]
+        }
+
+        expected_result = {
+            'Popular': 4,
+            'Psoe': 3,
+            'Podemos': 2,
+            'Ciudadanos': 1
+            }
+        
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+    #Test recuento BORDA. Realizado por Raúl. SI NADIE HA VOTADO A NINGÚN REPRESENTANTE
+    def test_borda3(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular', 'positions': []},
+                {'option': 'Psoe', 'positions': []},
+                {'option': 'Podemos', 'positions': []},
+                {'option': 'Ciudadanos', 'positions': []},
+            ]
+        }
+
+        expected_result = {}
+        
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+    #Test recuento BORDA. Realizado por Raúl. TODOS LOS VOTANTES NO HAN VOTADO A UN REPRESENTANTE,
+    #EN ESTE CASO, AL REPRESENTANTE 'Podemos'
+    def test_borda4(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular', 'positions': [1,3,3,4]},
+                {'option': 'Psoe', 'positions': [2,2,1,1]},
+                {'option': 'Podemos', 'positions': []},
+                {'option': 'Ciudadanos', 'positions': [3,4,2,2]},
+            ]
+        }
+
+        expected_result = {}
+        
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
