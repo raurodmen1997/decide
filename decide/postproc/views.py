@@ -20,12 +20,18 @@ class PostProcView(APIView):
     #Recuento borda. Realizado por Raúl.
     def borda(self, options):
         salida = {}
+
         for opcion in options:
-            suma_total_opcion = 0
-            for posicion in opcion[positions].get(opcion[option]):
-                valor = len(options) - posicion + 1
-                suma_total_opcion += valor
-            salida[opcion[option]] = suma_total_opcion
+            if len(opcion['positions']) != 0:
+                suma_total_opcion = 0
+                for posicion in opcion['positions']:
+                    valor = len(options) - posicion + 1
+                    suma_total_opcion += valor
+                salida[opcion['option']] = suma_total_opcion
+            else:
+                salida = {}
+                break
+
         return Response(salida)
 
 
@@ -34,7 +40,7 @@ class PostProcView(APIView):
 
     def post(self, request):
         """
-         * type: IDENTITY | EQUALITY | WEIGHT
+         * type: IDENTITY | EQUALITY | WEIGHT | BORDA
          * options: [
             {
              option: str,
@@ -50,5 +56,6 @@ class PostProcView(APIView):
 
         if t == 'IDENTITY':
             return self.identity(opts)
-
+        elif t == 'BORDA':
+            return self.borda(opts)
         return Response({})
