@@ -4,12 +4,13 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 
 from base import mods
-
+from postproc import views
 
 class PostProcTestCase(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.views = views.PostProcView()
         mods.mock_query(self.client)
 
     def tearDown(self):
@@ -42,3 +43,26 @@ class PostProcTestCase(APITestCase):
 
         values = response.json()
         self.assertEqual(values, expected_result)
+
+    def test_huntington_hill(self):
+        data = {
+            'type': 'HUNTINGTON_HILL',
+            'options': [
+                {'option':'PP','votes': 100000},
+                {'option':'PSOE', 'votes': 80000},
+                {'option':'Podemos', 'votes': 30000},
+                {'option':'Cs', 'votes': 20000}
+            ],
+            'escaños': 8
+        }
+
+        expected_result = [
+            {'option':'PP','numEscaños': 4},
+            {'option':'PSOE','numEscaños': 3},
+            {'option':'Podemos','numEscaños': 1},
+            {'option':'Cs','numEscaños': 0}
+        ]
+
+        result = self.views.metodoHuntington_Hill(data)
+
+        self.assertEqual(result, expected_result)
