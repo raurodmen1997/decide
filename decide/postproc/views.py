@@ -11,10 +11,13 @@ class PostProcView(APIView):
     def hare(self, options):
         out = []
         inputData = {}
-        results = {}  
-        numSeats = 21
+        results = {}
         quotient = 0
 
+        # Variable necesaria que debe ser parte del parametro 'options'  
+        numSeats = 21
+
+        # Formateo de la entrada
         for opt in options:
             i = opt['number']
             v = opt['votes']
@@ -25,6 +28,7 @@ class PostProcView(APIView):
 
         results = self.residueDistribution(self.seatsAndResidues(inputData, quotient), numSeats)
 
+        # Formateo de la salida
         for index, opt in enumerate(options, start = 1):
             out.append({
                 **opt,
@@ -33,7 +37,7 @@ class PostProcView(APIView):
 
         return Response(out)
 
-    # Simple sumatorio de los votos totales
+    # Sumatorio de los votos totales
     def votesSum(self, allVotes):
         sum = 0
         for x in allVotes.values():
@@ -80,8 +84,7 @@ class PostProcView(APIView):
         while notDistributed > 0:
             selected = sortedResidues[n]
             pos = residues.index(selected)
-        
-            residues.pop(pos)
+
             notDistributed -= 1
 
             list(values)[pos][0] += 1
