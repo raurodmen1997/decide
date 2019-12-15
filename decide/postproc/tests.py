@@ -42,3 +42,83 @@ class PostProcTestCase(APITestCase):
 
         values = response.json()
         self.assertEqual(values, expected_result)
+
+
+    def test_hondt_01(self):
+        data = {
+            'type': 'HONDT',
+            'options': [
+                {'option':'A','votes': 340000},
+                {'option':'B', 'votes': 280000},
+                {'option':'C', 'votes': 160000},
+                {'option':'D', 'votes': 60000},
+                {'option':'E', 'votes': 15000}
+            ],
+            'escañosTotales': 7
+        }
+
+        expected_result = [
+            {'option':'A','numEscaños': 3},
+            {'option':'B','numEscaños': 3},
+            {'option':'C','numEscaños': 1},
+            {'option':'D','numEscaños': 0},
+            {'option':'E','numEscaños': 0}
+        ]
+
+        result = self.views.metodoHondt(data)
+
+        self.assertEqual(result, expected_result)
+
+
+    def test_hondt_02(self):
+        data = {
+            'type': 'HONDT',
+            'options': [
+                {'option':'ROSA','votes': 100},
+                {'option':'VERDE', 'votes': 80},
+                {'option':'ROJO', 'votes': 70},
+                {'option':'AMARILLO', 'votes': 5},
+                {'option':'AZUL', 'votes': 3}
+            ],
+            'escañosTotales': 5
+        }
+
+        expected_result = [
+            {'option':'ROSA','numEscaños': 2},
+            {'option':'VERDE','numEscaños': 2},
+            {'option':'ROJO','numEscaños': 1},
+            {'option':'AMARILLO','numEscaños': 0},
+            {'option':'AZUL','numEscaños': 0}
+        ]
+
+        result = self.views.metodoHondt(data)
+
+        self.assertEqual(result, expected_result)
+
+
+    def test_hondt_03(self):
+        data = {
+            'type': 'HONDT',
+            'options': [
+                {'option':'A','votes': 168000},
+                {'option':'B', 'votes': 104000},
+                {'option':'C', 'votes': 72000},
+                {'option':'D', 'votes': 64000},
+                {'option':'E', 'votes': 40000},
+                {'option':'F', 'votes': 32000}
+            ],
+            'escañosTotales': 8
+        }
+
+        expected_result = [
+            {'option':'A','numEscaños': 4},
+            {'option':'B','numEscaños': 2},
+            {'option':'C','numEscaños': 1},
+            {'option':'D','numEscaños': 1},
+            {'option':'E','numEscaños': 0},
+            {'option':'F','numEscaños': 0}
+        ]
+
+        result = self.views.metodoHondt(data)
+
+        self.assertEqual(result, expected_result)
