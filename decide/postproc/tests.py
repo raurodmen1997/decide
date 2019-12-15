@@ -44,8 +44,8 @@ class PostProcTestCase(APITestCase):
         values = response.json()
         self.assertEqual(values, expected_result)
 
-    def test_huntington_hill(self):
-        data1 = {
+    def test_huntington_hill1(self):
+        data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
                 {'option':'PP','votes': 100000},
@@ -56,14 +56,22 @@ class PostProcTestCase(APITestCase):
             'escaños': 8
         }
 
-        expected_result1 = [
+        expected_result = [
             {'option':'PP','numEscaños': 4},
             {'option':'PSOE','numEscaños': 3},
             {'option':'Podemos','numEscaños': 1},
             {'option':'Cs','numEscaños': 0}
         ]
 
-        data2 = {
+        result = self.views.metodoHuntington_Hill(data)
+
+        print('Ejemplo 1')
+        print(data)
+        print(result)
+        self.assertEqual(result, expected_result)
+
+    def test_huntington_hill2(self):
+        data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
                 {'option':'PP','votes': 126837},
@@ -73,13 +81,21 @@ class PostProcTestCase(APITestCase):
             'escaños': 4
         }
 
-        expected_result2 = [
+        expected_result = [
             {'option':'PP','numEscaños': 3},
             {'option':'PSOE','numEscaños': 1},
             {'option':'Podemos','numEscaños': 0},
         ]
 
-        data3 = {
+        result = self.views.metodoHuntington_Hill(data)
+
+        print('Ejemplo 2')
+        print(data)
+        print(result)
+        self.assertEqual(result, expected_result)
+
+    def test_huntington_hill3(self):
+        data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
                 {'option':'Marta','votes': 380},
@@ -90,14 +106,22 @@ class PostProcTestCase(APITestCase):
             'escaños': 22
         }
 
-        expected_result3 = [
+        expected_result = [
             {'option':'Marta','numEscaños': 10},
             {'option':'Jose','numEscaños': 7},
             {'option':'Pedro','numEscaños': 3},
             {'option':'Ana','numEscaños': 2}
         ]
 
-        data4 = {
+        result = self.views.metodoHuntington_Hill(data)
+
+        print('Ejemplo 3')
+        print(data)
+        print(result)
+        self.assertEqual(result, expected_result)
+
+    def test_huntington_hill4(self):
+        data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
                 {'option':'PP','votes': 162310},
@@ -107,30 +131,15 @@ class PostProcTestCase(APITestCase):
             'escaños': 41
         }
 
-        expected_result4 = [
+        expected_result = [
             {'option':'PP','numEscaños': 7},
             {'option':'PSOE','numEscaños': 25},
             {'option':'Podemos','numEscaños': 9},
         ]
 
-        result1 = self.views.metodoHuntington_Hill(data1)
-        result2 = self.views.metodoHuntington_Hill(data2)
-        result3 = self.views.metodoHuntington_Hill(data3)
-        result4 = self.views.metodoHuntington_Hill(data4)
+        result = self.views.metodoHuntington_Hill(data)
 
-        print('Ejemplo 1')
-        print(data1)
-        print(result1)
-        self.assertEqual(result1, expected_result1)
-        print('Ejemplo 2')
-        print(data2)
-        print(result2)
-        self.assertEqual(result2, expected_result2)
-        print('Ejemplo 3')
-        print(data3)
-        print(result3)
-        self.assertEqual(result3, expected_result3)
         print('Ejemplo 4')
-        print(data4)
-        print(result4)
-        self.assertEqual(result4, expected_result4)
+        print(data)
+        print(result)
+        self.assertEqual(result, expected_result)
