@@ -45,7 +45,7 @@ class PostProcTestCase(APITestCase):
         self.assertEqual(values, expected_result)
 
     def test_huntington_hill(self):
-        data = {
+        data1 = {
             'type': 'HUNTINGTON_HILL',
             'options': [
                 {'option':'PP','votes': 100000},
@@ -56,13 +56,81 @@ class PostProcTestCase(APITestCase):
             'escaños': 8
         }
 
-        expected_result = [
+        expected_result1 = [
             {'option':'PP','numEscaños': 4},
             {'option':'PSOE','numEscaños': 3},
             {'option':'Podemos','numEscaños': 1},
             {'option':'Cs','numEscaños': 0}
         ]
 
-        result = self.views.metodoHuntington_Hill(data)
+        data2 = {
+            'type': 'HUNTINGTON_HILL',
+            'options': [
+                {'option':'PP','votes': 126837},
+                {'option':'PSOE', 'votes': 71804},
+                {'option':'Podemos', 'votes': 25880},
+            ],
+            'escaños': 4
+        }
 
-        self.assertEqual(result, expected_result)
+        expected_result2 = [
+            {'option':'PP','numEscaños': 3},
+            {'option':'PSOE','numEscaños': 1},
+            {'option':'Podemos','numEscaños': 0},
+        ]
+
+        data3 = {
+            'type': 'HUNTINGTON_HILL',
+            'options': [
+                {'option':'Marta','votes': 380},
+                {'option':'Jose', 'votes': 240},
+                {'option':'Pedro', 'votes': 105},
+                {'option':'Ana', 'votes': 55}
+            ],
+            'escaños': 22
+        }
+
+        expected_result3 = [
+            {'option':'Marta','numEscaños': 10},
+            {'option':'Jose','numEscaños': 7},
+            {'option':'Pedro','numEscaños': 3},
+            {'option':'Ana','numEscaños': 2}
+        ]
+
+        data4 = {
+            'type': 'HUNTINGTON_HILL',
+            'options': [
+                {'option':'PP','votes': 162310},
+                {'option':'PSOE', 'votes': 538479},
+                {'option':'Podemos', 'votes': 197145},
+            ],
+            'escaños': 41
+        }
+
+        expected_result4 = [
+            {'option':'PP','numEscaños': 7},
+            {'option':'PSOE','numEscaños': 25},
+            {'option':'Podemos','numEscaños': 9},
+        ]
+
+        result1 = self.views.metodoHuntington_Hill(data1)
+        result2 = self.views.metodoHuntington_Hill(data2)
+        result3 = self.views.metodoHuntington_Hill(data3)
+        result4 = self.views.metodoHuntington_Hill(data4)
+
+        print('Ejemplo 1')
+        print(data1)
+        print(result1)
+        self.assertEqual(result1, expected_result1)
+        print('Ejemplo 2')
+        print(data2)
+        print(result2)
+        self.assertEqual(result2, expected_result2)
+        print('Ejemplo 3')
+        print(data3)
+        print(result3)
+        self.assertEqual(result3, expected_result3)
+        print('Ejemplo 4')
+        print(data4)
+        print(result4)
+        self.assertEqual(result4, expected_result4)
