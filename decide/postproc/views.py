@@ -116,6 +116,7 @@ class PostProcView(APIView):
         out.sort(key=lambda x: -x['postproc'])
         return Response(out)
 
+
     def cocienteImperiali(self, numEscanyos, datos):
         #Obtenemos los votos totales de la votacion
         totalVotos = self.sumaVotos(datos)
@@ -181,9 +182,31 @@ class PostProcView(APIView):
         return suma
 
 
+    #Recuento borda. Realizado por Raúl.
+    def borda(self, options):
+        salida = {}
+
+        for opcion in options:
+            if len(opcion['positions']) != 0:
+                suma_total_opcion = 0
+                for posicion in opcion['positions']:
+                    valor = len(options) - posicion + 1
+                    suma_total_opcion += valor
+                salida[opcion['option']] = suma_total_opcion
+            else:
+                salida = {}
+                break
+
+        return Response(salida)
+
+
+
+
+
+
     def post(self, request):
         """
-         * type: IDENTITY | EQUALITY | WEIGHT
+         * type: IDENTITY | EQUALITY | WEIGHT | BORDA
          * options: [
             {
              option: str,
@@ -211,6 +234,9 @@ class PostProcView(APIView):
             return self.cocienteImperiali(0, opts)
         elif t == 'COCIENTE_IMPERIALI6':
             return self.cocienteImperiali(20, opts)
+        elif t == 'BORDA':
+            return self.borda(opts)
+
         return Response({})
 
 
