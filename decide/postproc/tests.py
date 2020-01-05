@@ -4,12 +4,15 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 
 from base import mods
+from postproc import views
+
 
 
 class PostProcTestCase(APITestCase):
 
     def setUp(self):
         self.client = APIClient()
+        self.views = views.PostProcView()
         mods.mock_query(self.client)
 
     def tearDown(self):
@@ -58,17 +61,19 @@ class PostProcTestCase(APITestCase):
         }
 
         expected_result = [
-            {'option':'A','numEscaños': 3},
-            {'option':'B','numEscaños': 3},
-            {'option':'C','numEscaños': 1},
-            {'option':'D','numEscaños': 0},
-            {'option':'E','numEscaños': 0}
+            {'option':'A','votes': 340000,'numEscaños': 3},
+            {'option':'B', 'votes': 280000,'numEscaños': 3},
+            {'option':'C', 'votes': 160000,'numEscaños': 1},
+            {'option':'D', 'votes': 60000,'numEscaños': 0},
+            {'option':'E', 'votes': 15000,'numEscaños': 0}
         ]
 
         result = self.views.metodoHondt(data)
 
-        self.assertEqual(result, expected_result)
+        print('test 1')
+        print(result)
 
+        self.assertEqual(result, expected_result)
 
     def test_hondt_02(self):
         data = {
@@ -84,17 +89,16 @@ class PostProcTestCase(APITestCase):
         }
 
         expected_result = [
-            {'option':'ROSA','numEscaños': 2},
-            {'option':'VERDE','numEscaños': 2},
-            {'option':'ROJO','numEscaños': 1},
-            {'option':'AMARILLO','numEscaños': 0},
-            {'option':'AZUL','numEscaños': 0}
+            {'option':'ROSA','votes': 100,'numEscaños': 2},
+            {'option':'VERDE', 'votes': 80,'numEscaños': 2},
+            {'option':'ROJO', 'votes': 70,'numEscaños': 1},
+            {'option':'AMARILLO', 'votes': 5,'numEscaños': 0},
+            {'option':'AZUL', 'votes': 3,'numEscaños': 0}
         ]
 
         result = self.views.metodoHondt(data)
 
         self.assertEqual(result, expected_result)
-
 
     def test_hondt_03(self):
         data = {
@@ -111,12 +115,12 @@ class PostProcTestCase(APITestCase):
         }
 
         expected_result = [
-            {'option':'A','numEscaños': 4},
-            {'option':'B','numEscaños': 2},
-            {'option':'C','numEscaños': 1},
-            {'option':'D','numEscaños': 1},
-            {'option':'E','numEscaños': 0},
-            {'option':'F','numEscaños': 0}
+            {'option':'A','votes': 168000,'numEscaños': 4},
+            {'option':'B', 'votes': 104000,'numEscaños': 2},
+            {'option':'C', 'votes': 72000,'numEscaños': 1},
+            {'option':'D', 'votes': 64000,'numEscaños': 1},
+            {'option':'E', 'votes': 40000,'numEscaños': 0},
+            {'option':'F', 'votes': 32000,'numEscaños': 0}
         ]
 
         result = self.views.metodoHondt(data)
