@@ -8,7 +8,7 @@ import copy
 
 class PostProcView(APIView):
 
-<<<<<<< HEAD
+
     def ley_de_hondt(self,listaEscaños,escañosTotales):
 
         numEscañosRepartidos = 0
@@ -59,7 +59,7 @@ class PostProcView(APIView):
 
 
     def identity(self, options):
-=======
+
     def metodoHuntington_Hill_aux(self,lista,escaños):
 
         #Calculamos el numero de votos totales
@@ -158,7 +158,7 @@ class PostProcView(APIView):
     # Método de reparto de escaños mediante el Cociente Hare
     # type: 'HARE'
     def hare(self, options):
->>>>>>> 1f1d8fe03085badb4ad8d559e318cbf8bf17fd93
+
         out = []
         inputData = {}
         results = {}
@@ -251,8 +251,6 @@ class PostProcView(APIView):
         return Response(out)
 
 
-<<<<<<< HEAD
-=======
     def cocienteImperiali(self, numEscanyos, datos):
         #Obtenemos los votos totales de la votacion
         totalVotos = self.sumaVotos(datos)
@@ -334,7 +332,7 @@ class PostProcView(APIView):
                 break
 
         return Response(salida)
->>>>>>> 1f1d8fe03085badb4ad8d559e318cbf8bf17fd93
+
 
     def post(self, request):
         """
@@ -371,7 +369,9 @@ class PostProcView(APIView):
         elif t == 'HARE':
             return self.hare(opts)
 
-<<<<<<< HEAD
+        return Response({})
+
+          
         return Response({})
 
 
@@ -383,6 +383,16 @@ class PostProcView(APIView):
             return self.ley_de_hondt(lista,escañosTotales)
         else:
             return {}
-=======
+
+
+    def metodoHondt(self, data):
+        t = data.get('type')
+        lista = data.get('options')
+        escañosTotales = data.get('escañosTotales')
+        if(t == 'HONDT'):
+            return self.ley_de_hondt(lista,escañosTotales)
+        else:
+            return {}
+
         return Response({})
->>>>>>> 1f1d8fe03085badb4ad8d559e318cbf8bf17fd93
+
