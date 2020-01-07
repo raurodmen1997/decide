@@ -58,8 +58,6 @@ class PostProcView(APIView):
         return listaEscaños
 
 
-    def identity(self, options):
-
     def metodoHuntington_Hill_aux(self,lista,escaños):
 
         #Calculamos el numero de votos totales
