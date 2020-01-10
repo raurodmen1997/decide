@@ -350,17 +350,7 @@ class PostProcView(APIView):
         
         if t == 'IDENTITY':
             return self.identity(opts)
-        elif t == 'COCIENTE_IMPERIALI1':
-            return self.cocienteImperiali(numEscanyos, opts)
-        elif t == 'COCIENTE_IMPERIALI2':
-            return self.cocienteImperiali(numEscanyos, opts)
-        elif t == 'COCIENTE_IMPERIALI3':
-            return self.cocienteImperiali(numEscanyos, opts)
-        elif t == 'COCIENTE_IMPERIALI4':
-            return self.cocienteImperiali(numEscanyos, opts)
-        elif t == 'COCIENTE_IMPERIALI5':
-            return self.cocienteImperiali(numEscanyos, opts)
-        elif t == 'COCIENTE_IMPERIALI6':
+        elif t == 'COCIENTE_IMPERIALI':
             return self.cocienteImperiali(numEscanyos, opts)
         elif t == 'BORDA':
             return self.borda(opts)

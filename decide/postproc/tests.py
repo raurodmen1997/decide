@@ -647,7 +647,7 @@ class PostProcTestCase(APITestCase):
 
     def test_imperiali_1(self):
         data = {
-            'type': 'COCIENTE_IMPERIALI1',
+            'type': 'COCIENTE_IMPERIALI',
             'options': [
                 { 'option': 'A', 'number': 1, 'votes': 391000 },
                 { 'option': 'B', 'number': 2, 'votes': 311000 },
@@ -679,7 +679,7 @@ class PostProcTestCase(APITestCase):
     def test_imperiali_2(self):
         #Test 2: Más partidos que escaños a repartir
         data = {
-            'type': 'COCIENTE_IMPERIALI2',
+            'type': 'COCIENTE_IMPERIALI',
             'options': [
                 { 'option': 'A', 'number': 1, 'votes': 391000 },
                 { 'option': 'B', 'number': 2, 'votes': 311000 },
@@ -711,7 +711,7 @@ class PostProcTestCase(APITestCase):
     def test_imperiali_3(self):
         #Test 3: Repartir 0 escaños entre todos los partidos
         data = {
-            'type': 'COCIENTE_IMPERIALI3',
+            'type': 'COCIENTE_IMPERIALI',
             'options': [
                 { 'option': 'A', 'number': 1, 'votes': 391000 },
                 { 'option': 'B', 'number': 2, 'votes': 311000 },
@@ -744,7 +744,7 @@ class PostProcTestCase(APITestCase):
     def test_imperiali_4(self):
         #Test 4: Repartir escaños para partidos con 0 votos
         data = {
-            'type': 'COCIENTE_IMPERIALI4',
+            'type': 'COCIENTE_IMPERIALI',
             'options': [
                 { 'option': 'A', 'number': 1, 'votes': 0 },
                 { 'option': 'B', 'number': 2, 'votes': 0 },
@@ -777,7 +777,7 @@ class PostProcTestCase(APITestCase):
     def test_imperiali_5(self):
         #Test 5: Repartir 0 escaños para partidos con 0 votos
         data = {
-            'type': 'COCIENTE_IMPERIALI5',
+            'type': 'COCIENTE_IMPERIALI',
             'options': [
                 { 'option': 'A', 'number': 1, 'votes': 0 },
                 { 'option': 'B', 'number': 2, 'votes': 0 },
@@ -809,7 +809,7 @@ class PostProcTestCase(APITestCase):
     def test_imperiali_6(self):
         #Test 6: Partidos con el mismo numero de votos y con 20 escaños a repartir
         data = {
-            'type': 'COCIENTE_IMPERIALI6',
+            'type': 'COCIENTE_IMPERIALI',
             'options': [
                 { 'option': 'A', 'number': 1, 'votes': 10 },
                 { 'option': 'B', 'number': 2, 'votes': 20 },
