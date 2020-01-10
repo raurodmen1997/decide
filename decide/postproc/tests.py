@@ -166,36 +166,6 @@ class PostProcTestCase(APITestCase):
         values = response.json()
         self.assertEqual(values, expected_result)
 
-    def test_imperiali_4(self):
-        #Test 4: Repartir escaños para partidos con 0 votos
-        data = {
-            'type': 'COCIENTE_IMPERIALI4',
-            'options': [
-                { 'option': 'A', 'number': 1, 'votes': 0 },
-                { 'option': 'B', 'number': 2, 'votes': 0 },
-                { 'option': 'C', 'number': 3, 'votes': 0 },
-                { 'option': 'D', 'number': 4, 'votes': 0 },
-                { 'option': 'E', 'number': 5, 'votes': 0 },
-                { 'option': 'F', 'number': 6, 'votes': 0 },
-                { 'option': 'G', 'number': 7, 'votes': 0 },
-            ]
-        }
-
-        expected_result = [
-            { 'option': 'A', 'number': 1, 'votes': 0, 'escanyos': 0},
-            { 'option': 'B', 'number': 2, 'votes': 0, 'escanyos': 0},
-            { 'option': 'C', 'number': 3, 'votes': 0, 'escanyos': 0},
-            { 'option': 'D', 'number': 4, 'votes': 0, 'escanyos': 0},
-            { 'option': 'E', 'number': 5, 'votes': 0, 'escanyos': 0},
-            { 'option': 'F', 'number': 6, 'votes': 0, 'escanyos': 0},
-            { 'option': 'G', 'number': 7, 'votes': 0, 'escanyos': 0},
-        ]
-
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
 
     def test_imperiali_5(self):
         #Test 5: Repartir 0 escaños para partidos con 0 votos
