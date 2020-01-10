@@ -656,7 +656,8 @@ class PostProcTestCase(APITestCase):
                 { 'option': 'E', 'number': 5, 'votes': 27000 },
                 { 'option': 'F', 'number': 6, 'votes': 12000 },
                 { 'option': 'G', 'number': 7, 'votes': 2000 },
-            ]
+            ],
+            'numEscanyos': 21,
         }
 
         expected_result = [
@@ -687,7 +688,8 @@ class PostProcTestCase(APITestCase):
                 { 'option': 'E', 'number': 5, 'votes': 27000 },
                 { 'option': 'F', 'number': 6, 'votes': 12000 },
                 { 'option': 'G', 'number': 7, 'votes': 2000 },
-            ]
+            ],
+            'numEscanyos': 6,
         }
 
         expected_result = [
@@ -718,7 +720,9 @@ class PostProcTestCase(APITestCase):
                 { 'option': 'E', 'number': 5, 'votes': 27000 },
                 { 'option': 'F', 'number': 6, 'votes': 12000 },
                 { 'option': 'G', 'number': 7, 'votes': 2000 },
-            ]
+            ],
+            'numEscanyos': 0,
+            
         }
 
         expected_result = [
@@ -749,7 +753,8 @@ class PostProcTestCase(APITestCase):
                 { 'option': 'E', 'number': 5, 'votes': 0 },
                 { 'option': 'F', 'number': 6, 'votes': 0 },
                 { 'option': 'G', 'number': 7, 'votes': 0 },
-            ]
+            ],
+            'numEscanyos': 10,
         }
 
         expected_result = [
@@ -781,7 +786,8 @@ class PostProcTestCase(APITestCase):
                 { 'option': 'E', 'number': 5, 'votes': 0 },
                 { 'option': 'F', 'number': 6, 'votes': 0 },
                 { 'option': 'G', 'number': 7, 'votes': 0 },
-            ]
+            ],
+            'numEscanyos': 0,
         }
 
         expected_result = [
@@ -812,7 +818,8 @@ class PostProcTestCase(APITestCase):
                 { 'option': 'E', 'number': 5, 'votes': 1 },
                 { 'option': 'F', 'number': 6, 'votes': 20 },
                 { 'option': 'G', 'number': 7, 'votes': 0 },
-            ]
+            ],
+            'numEscanyos': 20,
         }
 
         expected_result = [
