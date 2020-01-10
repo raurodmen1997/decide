@@ -313,8 +313,9 @@ class PostProcView(APIView):
         return suma
 
 
-    #Recuento borda. Realizado por Raúl.
+        #Recuento borda. Realizado por Raúl.
     def borda(self, options):
+        salida = {}
         #salida = options
         boole = False
 
@@ -326,15 +327,16 @@ class PostProcView(APIView):
                 for posicion in opcion['positions']:
                     valor = len(options) - posicion + 1
                     suma_total_opcion += valor
+                salida[opcion['option']] = suma_total_opcion
                 opcion['votes'] = suma_total_opcion
-                
+
             else:
+                salida = {}
                 boole = True
                 break
         if boole == True:
             for opcion in options:
                 opcion['votes'] = 0
-
         return Response(options)
 
 
