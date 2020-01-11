@@ -404,21 +404,21 @@ class PostProcTestCase(APITestCase):
         data = {
             'type': 'HONDT',
             'options': [
-                {'option':'A','votes': 340000},
-                {'option':'B', 'votes': 280000},
-                {'option':'C', 'votes': 160000},
-                {'option':'D', 'votes': 60000},
-                {'option':'E', 'votes': 15000}
+                {'option':'A','number':1,'votes': 340000},
+                {'option':'B','number':2, 'votes': 280000},
+                {'option':'C','number':3, 'votes': 160000},
+                {'option':'D','number':4, 'votes': 60000},
+                {'option':'E','number':5, 'votes': 15000}
             ],
-            'escañosTotales': 7
+            'numEscanyos': 7
         }
 
         expected_result = [
-            {'option':'A','votes': 340000,'numEscaños': 3},
-            {'option':'B', 'votes': 280000,'numEscaños': 3},
-            {'option':'C', 'votes': 160000,'numEscaños': 1},
-            {'option':'D', 'votes': 60000,'numEscaños': 0},
-            {'option':'E', 'votes': 15000,'numEscaños': 0}
+            {'option':'A','number':1,'votes': 340000,'escanyos': 3},
+            {'option':'B','number':2, 'votes': 280000,'escanyos': 3},
+            {'option':'C','number':3, 'votes': 160000,'escanyos': 1},
+            {'option':'D','number':4, 'votes': 60000,'escanyos': 0},
+            {'option':'E','number':5, 'votes': 15000,'escanyos': 0}
         ]
 
         result = self.views.metodoHondt(data)
@@ -432,21 +432,21 @@ class PostProcTestCase(APITestCase):
         data = {
             'type': 'HONDT',
             'options': [
-                {'option':'ROSA','votes': 100},
-                {'option':'VERDE', 'votes': 80},
-                {'option':'ROJO', 'votes': 70},
-                {'option':'AMARILLO', 'votes': 5},
-                {'option':'AZUL', 'votes': 3}
+                {'option':'ROSA','number':1,'votes': 100},
+                {'option':'VERDE','number':2, 'votes': 80},
+                {'option':'ROJO','number':3, 'votes': 70},
+                {'option':'AMARILLO','number':4, 'votes': 5},
+                {'option':'AZUL', 'number':5, 'votes': 3}
             ],
-            'escañosTotales': 5
+            'numEscanyos': 5
         }
 
         expected_result = [
-            {'option':'ROSA','votes': 100,'numEscaños': 2},
-            {'option':'VERDE', 'votes': 80,'numEscaños': 2},
-            {'option':'ROJO', 'votes': 70,'numEscaños': 1},
-            {'option':'AMARILLO', 'votes': 5,'numEscaños': 0},
-            {'option':'AZUL', 'votes': 3,'numEscaños': 0}
+            {'option':'ROSA','number':1,'votes': 100,'escanyos': 2},
+            {'option':'VERDE','number':2, 'votes': 80,'escanyos': 2},
+            {'option':'ROJO','number':3, 'votes': 70,'escanyos': 1},
+            {'option':'AMARILLO','number':4, 'votes': 5,'escanyos': 0},
+            {'option':'AZUL','number':5, 'votes': 3,'escanyos': 0}
         ]
 
         result = self.views.metodoHondt(data)
@@ -457,23 +457,23 @@ class PostProcTestCase(APITestCase):
         data = {
             'type': 'HONDT',
             'options': [
-                {'option':'A','votes': 168000},
-                {'option':'B', 'votes': 104000},
-                {'option':'C', 'votes': 72000},
-                {'option':'D', 'votes': 64000},
-                {'option':'E', 'votes': 40000},
-                {'option':'F', 'votes': 32000}
+                {'option':'A','number':1,'votes': 168000},
+                {'option':'B','number':2, 'votes': 104000},
+                {'option':'C','number':3, 'votes': 72000},
+                {'option':'D','number':4, 'votes': 64000},
+                {'option':'E','number':5, 'votes': 40000},
+                {'option':'F','number':6, 'votes': 32000}
             ],
-            'escañosTotales': 8
+            'numEscanyos': 8
         }
 
         expected_result = [
-            {'option':'A','votes': 168000,'numEscaños': 4},
-            {'option':'B', 'votes': 104000,'numEscaños': 2},
-            {'option':'C', 'votes': 72000,'numEscaños': 1},
-            {'option':'D', 'votes': 64000,'numEscaños': 1},
-            {'option':'E', 'votes': 40000,'numEscaños': 0},
-            {'option':'F', 'votes': 32000,'numEscaños': 0}
+            {'option':'A','number':1,'votes': 168000,'escanyos': 4},
+            {'option':'B','number':2, 'votes': 104000,'escanyos': 2},
+            {'option':'C','number':3, 'votes': 72000,'escanyos': 1},
+            {'option':'D','number':4, 'votes': 64000,'escanyos': 1},
+            {'option':'E','number':5, 'votes': 40000,'escanyos': 0},
+            {'option':'F','number':6, 'votes': 32000,'escanyos': 0}
         ]
 
         result = self.views.metodoHondt(data)
