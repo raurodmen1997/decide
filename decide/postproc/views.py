@@ -58,15 +58,15 @@ class PostProcView(APIView):
         return listaEscaños
 
 
-    def metodoHuntington_Hill_aux(self,lista,escaños):
+    def metodoHuntington_Hill(self,data,escanyos):
 
         #Calculamos el numero de votos totales
         totalVotes = 0
-        for x in lista:
-            totalVotes += x.get('votes')
+        for x in data:
+            totalVotes += x['votes']
 
         #Calculamos el divisor
-        d = totalVotes/escaños
+        d = totalVotes/escanyos
 
         #Creamos divisores un 0.1% inferior y superior por si necesitamos otro divisor
         dpercent = d*0.001
@@ -74,32 +74,36 @@ class PostProcView(APIView):
         dsup = d+dpercent
 
         #Creamos la lista de partidos con sus escaños y el numero de escaños que ha repartido nuestro metodo
-        listaEscaños = []
-        numEscañosRepartidos = 0
+        reparto = data
+        numEscanyosRepartidos = 0
+
+        #Creamos un contador para evitar el bucle infinito. 1000 vueltas como maximo es suficiente
+        contador = 0
 
         #Hacer lo siguiente HASTA que el numero de escaños repartidos y el real concuerden
-        while(numEscañosRepartidos != escaños):
+        while(numEscanyosRepartidos != escanyos and contador<1000):
+            contador +=1
 
             #Reseteamos la lista y el numero de escaños repartidos por si nos hemos equivocado de divisor
-            listaEscaños = []
-            numEscañosRepartidos = 0
+            reparto = data
+            numEscanyosRepartidos = 0
 
             #Por cada partido...
-            for x in lista:
+            for x in reparto:
 
                 #Si sus votos no superan el divisor pues no tendran escaños
-                if(x.get('votes')<d):
-                    listaEscaños.append({'option':x.get('option'),'numEscaños':0})
+                if(x['votes']<d):
+                    x['escanyos']=0
                 
                 #Si sus votos superan el divisor...
                 else:
                     
                     #Creamos la cuota de cada partido, en base al divisor actual
-                    quota = x.get('votes')/d
+                    quota = x['votes']/d
                     
                     #Si la cuota es un entero el numero de escaños es, directamente, la cuota
                     if(int(quota) == quota):
-                        listaEscaños.append({'option':x.get('option'),'numEscaños':int(quota)})
+                        x['escanyos']=int(quota)
                     
                     #Si la cuota no es un entero...
                     else:
@@ -111,18 +115,18 @@ class PostProcView(APIView):
 
                         #Si la cuota es superior a la media geometrica el numero de escaños es la cota sup.
                         if(quota > gM):
-                            listaEscaños.append({'option':x.get('option'),'numEscaños':hQ})
+                            x['escanyos']=hQ
 
                         #Si la cuota es inferior a la media geometrica el numero de escaños es la cota inf.
                         else:
-                            listaEscaños.append({'option':x.get('option'),'numEscaños':lQ})
+                            x['escanyos']=lQ
             
             #Una vez rellenada la lista calculamos cuantos escaños hemos utilizados en nuestro reparto
-            for e in listaEscaños:
-                numEscañosRepartidos += e.get('numEscaños')
+            for x in reparto:
+                numEscanyosRepartidos += x['escanyos']
             
             #Si el numero de escaños utilizados es menor que el real disminuimos el divisor
-            if(numEscañosRepartidos < escaños):
+            if(numEscanyosRepartidos < escanyos):
                 d = dinf
                 dinf = d-dpercent
                 dsup = d+dpercent
@@ -142,16 +146,7 @@ class PostProcView(APIView):
             # de divisor que se produce con cada intento, cuanto menor porciento de d menos posiblidad de
             # saltarse el divisor correcto pero mayor cantidad de vueltas se darian al bucle (Eficiencia = 1/Precision)
         
-        return listaEscaños
-
-    def metodoHuntington_Hill(self, data):
-        t = data.get('type')
-        lista = data.get('options')
-        escaños = data.get('escaños')
-        if(t == 'HUNTINGTON_HILL'):
-            return self.metodoHuntington_Hill_aux(lista,escaños)
-        else:
-            return {}
+        return Response(reparto)
 
     # Método de reparto de escaños mediante el Cociente Hare
     # type: 'HARE'
@@ -365,10 +360,9 @@ class PostProcView(APIView):
             return self.borda(opts)
         elif t == 'HARE':
             return self.hare(opts)
+        elif(t == 'HUNTINGTON_HILL'):
+            return self.metodoHuntington_Hill(opts,numEscanyos)
 
-        return Response({})
-
-          
         return Response({})
 
 

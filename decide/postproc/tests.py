@@ -107,297 +107,103 @@ class PostProcTestCase(APITestCase):
         self.assertEqual(values, expected_result)
 
 
+    #TESTs HUNTINGTON_HILL
 
     def test_huntington_hill1(self):
         data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
-                {'option':'PP','votes': 100000},
-                {'option':'PSOE', 'votes': 80000},
-                {'option':'Podemos', 'votes': 30000},
-                {'option':'Cs', 'votes': 20000}
+                {'option':'PP','number':1,'votes': 100000},
+                {'option':'PSOE', 'number':2,'votes': 80000},
+                {'option':'Podemos', 'number':3,'votes': 30000},
+                {'option':'Cs', 'number':4,'votes': 20000}
             ],
-            'escaños': 8
+            'numEscanyos': 8
         }
 
         expected_result = [
-            {'option':'PP','numEscaños': 4},
-            {'option':'PSOE','numEscaños': 3},
-            {'option':'Podemos','numEscaños': 1},
-            {'option':'Cs','numEscaños': 0}
+            {'option':'PP','number':1,'votes': 100000,'escanyos':4},
+            {'option':'PSOE', 'number':2,'votes': 80000,'escanyos':3},
+            {'option':'Podemos', 'number':3,'votes': 30000,'escanyos':1},
+            {'option':'Cs', 'number':4,'votes': 20000,'escanyos':0}
         ]
 
-        result = self.views.metodoHuntington_Hill(data)
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
 
-        print('Ejemplo 1')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
+        values = response.json()
+        self.assertEqual(values, expected_result)
 
     def test_huntington_hill2(self):
         data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
-                {'option':'PP','votes': 126837},
-                {'option':'PSOE', 'votes': 71804},
-                {'option':'Podemos', 'votes': 25880},
+                {'option':'PP','number':1,'votes': 126837},
+                {'option':'PSOE', 'number':2,'votes': 71804},
+                {'option':'Podemos', 'number':3,'votes': 25880}
             ],
-            'escaños': 4
+            'numEscanyos': 4
         }
 
         expected_result = [
-            {'option':'PP','numEscaños': 3},
-            {'option':'PSOE','numEscaños': 1},
-            {'option':'Podemos','numEscaños': 0},
+            {'option':'PP','number':1,'votes': 126837,'escanyos':3},
+            {'option':'PSOE', 'number':2,'votes': 71804,'escanyos':1},
+            {'option':'Podemos', 'number':3,'votes': 25880,'escanyos':0}
         ]
 
-        result = self.views.metodoHuntington_Hill(data)
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
 
-        print('Ejemplo 2')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
+        values = response.json()
+        self.assertEqual(values, expected_result)
 
     def test_huntington_hill3(self):
         data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
-                {'option':'Marta','votes': 380},
-                {'option':'Jose', 'votes': 240},
-                {'option':'Pedro', 'votes': 105},
-                {'option':'Ana', 'votes': 55}
+                {'option':'Marta','number':1,'votes': 380},
+                {'option':'Jose','number':2, 'votes': 240},
+                {'option':'Pedro','number':3, 'votes': 105},
+                {'option':'Ana', 'number':4,'votes': 55}
             ],
-            'escaños': 22
+            'numEscanyos': 22
         }
 
         expected_result = [
-            {'option':'Marta','numEscaños': 10},
-            {'option':'Jose','numEscaños': 7},
-            {'option':'Pedro','numEscaños': 3},
-            {'option':'Ana','numEscaños': 2}
+            {'option':'Marta','number':1,'votes': 380,'escanyos':10},
+            {'option':'Jose','number':2, 'votes': 240,'escanyos':7},
+            {'option':'Pedro','number':3, 'votes': 105,'escanyos':3},
+            {'option':'Ana', 'number':4,'votes': 55,'escanyos':2}
         ]
 
-        result = self.views.metodoHuntington_Hill(data)
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
 
-        print('Ejemplo 3')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
+        values = response.json()
+        self.assertEqual(values, expected_result)
 
     def test_huntington_hill4(self):
         data = {
             'type': 'HUNTINGTON_HILL',
             'options': [
-                {'option':'PP','votes': 162310},
-                {'option':'PSOE', 'votes': 538479},
-                {'option':'Podemos', 'votes': 197145},
+                {'option':'PP','number':1,'votes': 162310},
+                {'option':'PSOE','number':2, 'votes': 538479},
+                {'option':'Podemos','number':3, 'votes': 197145}
             ],
-            'escaños': 41
+            'numEscanyos': 41
         }
 
         expected_result = [
-            {'option':'PP','numEscaños': 7},
-            {'option':'PSOE','numEscaños': 25},
-            {'option':'Podemos','numEscaños': 9},
+            {'option':'PP','number':1,'votes': 162310,'escanyos':7},
+            {'option':'PSOE','number':2, 'votes': 538479,'escanyos':25},
+            {'option':'Podemos','number':3, 'votes': 197145,'escanyos':9}
         ]
 
-        result = self.views.metodoHuntington_Hill(data)
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
 
-        print('Ejemplo 4')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
-
-
-   
-
-    def test_hondt_01(self):
-        data = {
-            'type': 'HONDT',
-            'options': [
-                {'option':'A','votes': 340000},
-                {'option':'B', 'votes': 280000},
-                {'option':'C', 'votes': 160000},
-                {'option':'D', 'votes': 60000},
-                {'option':'E', 'votes': 15000}
-            ],
-            'escañosTotales': 7
-        }
-
-        expected_result = [
-            {'option':'A','votes': 340000,'numEscaños': 3},
-            {'option':'B', 'votes': 280000,'numEscaños': 3},
-            {'option':'C', 'votes': 160000,'numEscaños': 1},
-            {'option':'D', 'votes': 60000,'numEscaños': 0},
-            {'option':'E', 'votes': 15000,'numEscaños': 0}
-        ]
-
-        result = self.views.metodoHondt(data)
-
-        print('test 1')
-        print(result)
-
-        self.assertEqual(result, expected_result)
-
-    def test_hondt_02(self):
-        data = {
-            'type': 'HONDT',
-            'options': [
-                {'option':'ROSA','votes': 100},
-                {'option':'VERDE', 'votes': 80},
-                {'option':'ROJO', 'votes': 70},
-                {'option':'AMARILLO', 'votes': 5},
-                {'option':'AZUL', 'votes': 3}
-            ],
-            'escañosTotales': 5
-        }
-
-        expected_result = [
-            {'option':'ROSA','votes': 100,'numEscaños': 2},
-            {'option':'VERDE', 'votes': 80,'numEscaños': 2},
-            {'option':'ROJO', 'votes': 70,'numEscaños': 1},
-            {'option':'AMARILLO', 'votes': 5,'numEscaños': 0},
-            {'option':'AZUL', 'votes': 3,'numEscaños': 0}
-        ]
-
-        result = self.views.metodoHondt(data)
-
-        self.assertEqual(result, expected_result)
-
-    def test_hondt_03(self):
-        data = {
-            'type': 'HONDT',
-            'options': [
-                {'option':'A','votes': 168000},
-                {'option':'B', 'votes': 104000},
-                {'option':'C', 'votes': 72000},
-                {'option':'D', 'votes': 64000},
-                {'option':'E', 'votes': 40000},
-                {'option':'F', 'votes': 32000}
-            ],
-            'escañosTotales': 8
-        }
-
-        expected_result = [
-            {'option':'A','votes': 168000,'numEscaños': 4},
-            {'option':'B', 'votes': 104000,'numEscaños': 2},
-            {'option':'C', 'votes': 72000,'numEscaños': 1},
-            {'option':'D', 'votes': 64000,'numEscaños': 1},
-            {'option':'E', 'votes': 40000,'numEscaños': 0},
-            {'option':'F', 'votes': 32000,'numEscaños': 0}
-        ]
-
-        result = self.views.metodoHondt(data)
-
-        self.assertEqual(result, expected_result)
-
-
-
-    
-
-
-    def test_huntington_hill1(self):
-        data = {
-            'type': 'HUNTINGTON_HILL',
-            'options': [
-                {'option':'PP','votes': 100000},
-                {'option':'PSOE', 'votes': 80000},
-                {'option':'Podemos', 'votes': 30000},
-                {'option':'Cs', 'votes': 20000}
-            ],
-            'escaños': 8
-        }
-
-        expected_result = [
-            {'option':'PP','numEscaños': 4},
-            {'option':'PSOE','numEscaños': 3},
-            {'option':'Podemos','numEscaños': 1},
-            {'option':'Cs','numEscaños': 0}
-        ]
-
-        result = self.views.metodoHuntington_Hill(data)
-
-        print('Ejemplo 1')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
-
-    def test_huntington_hill2(self):
-        data = {
-            'type': 'HUNTINGTON_HILL',
-            'options': [
-                {'option':'PP','votes': 126837},
-                {'option':'PSOE', 'votes': 71804},
-                {'option':'Podemos', 'votes': 25880},
-            ],
-            'escaños': 4
-        }
-
-        expected_result = [
-            {'option':'PP','numEscaños': 3},
-            {'option':'PSOE','numEscaños': 1},
-            {'option':'Podemos','numEscaños': 0},
-        ]
-
-        result = self.views.metodoHuntington_Hill(data)
-
-        print('Ejemplo 2')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
-
-    def test_huntington_hill3(self):
-        data = {
-            'type': 'HUNTINGTON_HILL',
-            'options': [
-                {'option':'Marta','votes': 380},
-                {'option':'Jose', 'votes': 240},
-                {'option':'Pedro', 'votes': 105},
-                {'option':'Ana', 'votes': 55}
-            ],
-            'escaños': 22
-        }
-
-        expected_result = [
-            {'option':'Marta','numEscaños': 10},
-            {'option':'Jose','numEscaños': 7},
-            {'option':'Pedro','numEscaños': 3},
-            {'option':'Ana','numEscaños': 2}
-        ]
-
-        result = self.views.metodoHuntington_Hill(data)
-
-        print('Ejemplo 3')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
-
-    def test_huntington_hill4(self):
-        data = {
-            'type': 'HUNTINGTON_HILL',
-            'options': [
-                {'option':'PP','votes': 162310},
-                {'option':'PSOE', 'votes': 538479},
-                {'option':'Podemos', 'votes': 197145},
-            ],
-            'escaños': 41
-        }
-
-        expected_result = [
-            {'option':'PP','numEscaños': 7},
-            {'option':'PSOE','numEscaños': 25},
-            {'option':'Podemos','numEscaños': 9},
-        ]
-
-        result = self.views.metodoHuntington_Hill(data)
-
-        print('Ejemplo 4')
-        print(data)
-        print(result)
-        self.assertEqual(result, expected_result)
-
-
-   
+        values = response.json()
+        self.assertEqual(values, expected_result)
 
 
     def test_hondt_01(self):
@@ -479,12 +285,7 @@ class PostProcTestCase(APITestCase):
         result = self.views.metodoHondt(data)
 
         self.assertEqual(result, expected_result)
-
-
-    
-
-
-   
+ 
 
     #TEST IMPERIALI
 
