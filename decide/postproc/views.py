@@ -17,7 +17,7 @@ class PostProcView(APIView):
         for x in listaEscaños:
              x.update({ 
                         'cociente' : 0,
-                        'numEscaños' : 0 })
+                        'escanyos' : 0 })
 
 
         #Hacer lo siguiente HASTA que el numero de escaños repartidos y el real sean el mismo
@@ -26,7 +26,7 @@ class PostProcView(APIView):
             #Calculamos en primer lugar los cocientes para cada partido en la iteracion
             for x in listaEscaños:
 
-                    esc = int(x.get('numEscaños'))
+                    esc = int(x.get('escanyos'))
                     ci = x.get('votes')/(esc+1)
                     print(ci)
                     x.update({ 'cociente' : ci})
@@ -43,10 +43,10 @@ class PostProcView(APIView):
             #se le otarga como ganador 1 escaño mas y ninguno al resto de partidos
             for x in listaEscaños:
                if(x.get('cociente') == mayor_cociente):
-                   x.update({'numEscaños':x.get('numEscaños')+1})
+                   x.update({'escanyos':x.get('escanyos')+1})
                 
                else:
-                   x.update({'numEscaños':x.get('numEscaños')})
+                   x.update({'escanyos':x.get('escanyos')})
                 
             numEscañosRepartidos =  numEscañosRepartidos + 1
         
@@ -375,21 +375,10 @@ class PostProcView(APIView):
     def metodoHondt(self, data):
         t = data.get('type')
         lista = data.get('options')
-        escañosTotales = data.get('escañosTotales')
+        escañosTotales = data.get('numEscanyos')
         if(t == 'HONDT'):
             return self.ley_de_hondt(lista,escañosTotales)
         else:
             return {}
 
-
-    def metodoHondt(self, data):
-        t = data.get('type')
-        lista = data.get('options')
-        escañosTotales = data.get('escañosTotales')
-        if(t == 'HONDT'):
-            return self.ley_de_hondt(lista,escañosTotales)
-        else:
-            return {}
-
-        return Response({})
 
