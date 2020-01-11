@@ -154,16 +154,14 @@ class PostProcView(APIView):
             return {}
 
     # Método de reparto de escaños mediante el Cociente Hare
-    # type: 'HARE'
-    def hare(self, options):
+    # Type: HARE
+    # Realizado por Fran
+    def hare(self, options, numSeats):
 
         out = []
         inputData = {}
         results = {}
         quotient = 0
-
-        # Variable necesaria que debe ser parte del parametro 'options'  
-        numSeats = 21
 
         # Formateo de la entrada
         for opt in options:
@@ -180,7 +178,7 @@ class PostProcView(APIView):
         for index, opt in enumerate(options, start = 1):
             out.append({
                 **opt,
-                'seats': results.get(index)[0],
+                'escanyos': results.get(index)[0],
             })
 
         return Response(out)
@@ -355,13 +353,9 @@ class PostProcView(APIView):
         elif t == 'BORDA':
             return self.borda(opts)
         elif t == 'HARE':
-            return self.hare(opts)
+            return self.hare(opts, numEscanyos)
 
         return Response({})
-
-          
-        return Response({})
-
 
     def metodoHondt(self, data):
         t = data.get('type')
