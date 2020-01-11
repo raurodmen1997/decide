@@ -172,14 +172,26 @@ class PostProcView(APIView):
         totalVotes = self.votesSum(inputData)
         quotient = math.floor(totalVotes/numSeats)
 
-        results = self.residueDistribution(self.seatsAndResidues(inputData, quotient), numSeats)
+        # Tratamos el caso extremo en el que una votacion tenga 0 votos
+        if quotient != 0:
+            results = self.residueDistribution(self.seatsAndResidues(inputData, quotient), numSeats)
 
-        # Formateo de la salida
-        for index, opt in enumerate(options, start = 1):
-            out.append({
-                **opt,
-                'escanyos': results.get(index)[0],
-            })
+            print('OK',results)
+
+            # Formateo de la salida añadiendo la distribucion de escaños calculada
+            for index, opt in enumerate(options, start = 1):
+                out.append({
+                    **opt,
+                    'escanyos': results.get(index)[0],
+                })
+
+        # Consideramos la votacion invalida y devolvemos todos las opciones con 0 escaños asignados
+        else:
+            for index, opt in enumerate(options, start = 1):
+                out.append({
+                    **opt,
+                    'escanyos': 0,
+                })
 
         return Response(out)
 
@@ -194,17 +206,18 @@ class PostProcView(APIView):
     # residuo para cada partido
     def seatsAndResidues(self, data, quotient):
         res = {}
-        for x in data.values():
+        for index, x in enumerate(data.values(), start = 0):
             a = []
+
             seats = math.floor(x/quotient)
+            
             residue = x - quotient*seats
 
             a.append(seats)
             a.append(residue)
 
             key_list = list(data.keys()) 
-            val_list = list(data.values()) 
-            n = key_list[val_list.index(x)]
+            n = key_list[index]
 
             res[n] = a
 
