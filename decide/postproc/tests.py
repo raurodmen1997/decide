@@ -108,6 +108,118 @@ class PostProcTestCase(APITestCase):
         values = response.json()
         self.assertEqual(values, expected_result)
 
+    # Testeo del comportamiento del código con sólo 2 opciones
+    def test_hare_04(self):
+        data = {
+            'type': 'HARE',
+            'options': [
+                { 'option': 'Option 1', 'number': 1, 'votes': 264793 },
+                { 'option': 'Option 2', 'number': 2, 'votes': 654046 },
+            ],
+            'numEscanyos': 14,
+        }
+
+        expected_result = [
+            { 'option': 'Option 1', 'number': 1, 'votes': 264793, 'escanyos': 4 },
+            { 'option': 'Option 2', 'number': 2, 'votes': 654046, 'escanyos': 10 },
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+    # Testeo del comportamiento del código con una votación con 0 votos totales
+    def test_hare_05(self):
+        data = {
+            'type': 'HARE',
+            'options': [
+                { 'option': 'Option 1', 'number': 1, 'votes': 0 },
+                { 'option': 'Option 2', 'number': 2, 'votes': 0 },
+                { 'option': 'Option 3', 'number': 3, 'votes': 0 },
+                { 'option': 'Option 4', 'number': 4, 'votes': 0 },
+                { 'option': 'Option 5', 'number': 5, 'votes': 0 },
+                { 'option': 'Option 6', 'number': 6, 'votes': 0 },
+            ],
+            'numEscanyos': 27,
+        }
+
+        expected_result = [
+            { 'option': 'Option 1', 'number': 1, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 2', 'number': 2, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 3', 'number': 3, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 4', 'number': 4, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 5', 'number': 5, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 6', 'number': 6, 'votes': 0, 'escanyos': 0 },
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+    # Mismo caso que el anterior pero solo una opcion ha recibido votos
+    def test_hare_06(self):
+        data = {
+            'type': 'HARE',
+            'options': [
+                { 'option': 'Option 1', 'number': 1, 'votes': 1678 },
+                { 'option': 'Option 2', 'number': 2, 'votes': 0 },
+                { 'option': 'Option 3', 'number': 3, 'votes': 0 },
+                { 'option': 'Option 4', 'number': 4, 'votes': 0 },
+                { 'option': 'Option 5', 'number': 5, 'votes': 0 },
+                { 'option': 'Option 6', 'number': 6, 'votes': 0 },
+            ],
+            'numEscanyos': 34,
+        }
+
+        expected_result = [
+            { 'option': 'Option 1', 'number': 1, 'votes': 1678, 'escanyos': 34 },
+            { 'option': 'Option 2', 'number': 2, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 3', 'number': 3, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 4', 'number': 4, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 5', 'number': 5, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 6', 'number': 6, 'votes': 0, 'escanyos': 0 },
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+    # Sólo 2 opciones reciben votos y reciben el mismo numero
+    def test_hare_07(self):
+        data = {
+            'type': 'HARE',
+            'options': [
+                { 'option': 'Option 1', 'number': 1, 'votes': 1678 },
+                { 'option': 'Option 2', 'number': 2, 'votes': 0 },
+                { 'option': 'Option 3', 'number': 3, 'votes': 0 },
+                { 'option': 'Option 4', 'number': 4, 'votes': 1678 },
+                { 'option': 'Option 5', 'number': 5, 'votes': 0 },
+                { 'option': 'Option 6', 'number': 6, 'votes': 0 },
+            ],
+            'numEscanyos': 34,
+        }
+
+        expected_result = [
+            { 'option': 'Option 1', 'number': 1, 'votes': 1678, 'escanyos': 17 },
+            { 'option': 'Option 2', 'number': 2, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 3', 'number': 3, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 4', 'number': 4, 'votes': 1678, 'escanyos': 17 },
+            { 'option': 'Option 5', 'number': 5, 'votes': 0, 'escanyos': 0 },
+            { 'option': 'Option 6', 'number': 6, 'votes': 0, 'escanyos': 0 },
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
 
     def test_huntington_hill1(self):
         data = {
