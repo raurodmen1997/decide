@@ -71,6 +71,7 @@ class PostProcTestCase(APITestCase):
             { 'option': 'Option 5', 'number': 5, 'votes': 14, 'escanyos': 0 },
             { 'option': 'Option 6', 'number': 6, 'votes': 20145, 'escanyos': 1 },
         ]
+        
 
         response = self.client.post('/postproc/', data, format='json')
         self.assertEqual(response.status_code, 200)
@@ -322,57 +323,7 @@ class PostProcTestCase(APITestCase):
         self.assertEqual(result, expected_result)
 
 
-    #Test recuento BORDA. Realizado por Raúl. VARIOS VOTANTES, EN ESTE CASO, 4 VOTANTES
-    def test_borda(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': [1,1,3,2]},
-                {'option': 'Psoe', 'positions': [2,3,4,3]},
-                {'option': 'Podemos', 'positions': [3,4,1,4]},
-                {'option': 'Ciudadanos', 'positions': [4,2,2,1]},
-            ]
-        }
-
-        expected_result = {
-            'Popular': 13,
-            'Psoe': 8,
-            'Podemos': 8,
-            'Ciudadanos': 11
-            }
-        
-
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
-
-
-    #Test recuento BORDA. Realizado por Raúl. SOLO UN VOTANTE
-    def test_borda2(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': [1]},
-                {'option': 'Psoe', 'positions': [2]},
-                {'option': 'Podemos', 'positions': [3]},
-                {'option': 'Ciudadanos', 'positions': [4]},
-            ]
-        }
-
-        expected_result = {
-            'Popular': 4,
-            'Psoe': 3,
-            'Podemos': 2,
-            'Ciudadanos': 1
-            }
-        
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
+   
 
     def test_hondt_01(self):
         data = {
@@ -456,25 +407,7 @@ class PostProcTestCase(APITestCase):
 
 
 
-    #Test recuento BORDA. Realizado por Raúl. SI NADIE HA VOTADO A NINGÚN REPRESENTANTE
-    def test_borda3(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': []},
-                {'option': 'Psoe', 'positions': []},
-                {'option': 'Podemos', 'positions': []},
-                {'option': 'Ciudadanos', 'positions': []},
-            ]
-        }
-
-        expected_result = {}
-
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
+    
 
 
     def test_huntington_hill1(self):
@@ -578,78 +511,28 @@ class PostProcTestCase(APITestCase):
         self.assertEqual(result, expected_result)
 
 
-    #Test recuento BORDA. Realizado por Raúl. VARIOS VOTANTES, EN ESTE CASO, 4 VOTANTES
-    def test_borda(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': [1,1,3,2]},
-                {'option': 'Psoe', 'positions': [2,3,4,3]},
-                {'option': 'Podemos', 'positions': [3,4,1,4]},
-                {'option': 'Ciudadanos', 'positions': [4,2,2,1]},
-            ]
-        }
-
-        expected_result = {
-            'Popular': 13,
-            'Psoe': 8,
-            'Podemos': 8,
-            'Ciudadanos': 11
-            }
-        
-
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
-
-
-    #Test recuento BORDA. Realizado por Raúl. SOLO UN VOTANTE
-    def test_borda2(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': [1]},
-                {'option': 'Psoe', 'positions': [2]},
-                {'option': 'Podemos', 'positions': [3]},
-                {'option': 'Ciudadanos', 'positions': [4]},
-            ]
-        }
-
-        expected_result = {
-            'Popular': 4,
-            'Psoe': 3,
-            'Podemos': 2,
-            'Ciudadanos': 1
-            }
-        
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
+   
 
 
     def test_hondt_01(self):
         data = {
             'type': 'HONDT',
             'options': [
-                {'option':'A','votes': 340000},
-                {'option':'B', 'votes': 280000},
-                {'option':'C', 'votes': 160000},
-                {'option':'D', 'votes': 60000},
-                {'option':'E', 'votes': 15000}
+                {'option':'A','number':1,'votes': 340000},
+                {'option':'B','number':2, 'votes': 280000},
+                {'option':'C','number':3, 'votes': 160000},
+                {'option':'D','number':4, 'votes': 60000},
+                {'option':'E','number':5, 'votes': 15000}
             ],
-            'escañosTotales': 7
+            'numEscanyos': 7
         }
 
         expected_result = [
-            {'option':'A','votes': 340000,'numEscaños': 3},
-            {'option':'B', 'votes': 280000,'numEscaños': 3},
-            {'option':'C', 'votes': 160000,'numEscaños': 1},
-            {'option':'D', 'votes': 60000,'numEscaños': 0},
-            {'option':'E', 'votes': 15000,'numEscaños': 0}
+            {'option':'A','number':1,'votes': 340000,'escanyos': 3},
+            {'option':'B','number':2, 'votes': 280000,'escanyos': 3},
+            {'option':'C','number':3, 'votes': 160000,'escanyos': 1},
+            {'option':'D','number':4, 'votes': 60000,'escanyos': 0},
+            {'option':'E','number':5, 'votes': 15000,'escanyos': 0}
         ]
 
         result = self.views.metodoHondt(data)
@@ -663,21 +546,21 @@ class PostProcTestCase(APITestCase):
         data = {
             'type': 'HONDT',
             'options': [
-                {'option':'ROSA','votes': 100},
-                {'option':'VERDE', 'votes': 80},
-                {'option':'ROJO', 'votes': 70},
-                {'option':'AMARILLO', 'votes': 5},
-                {'option':'AZUL', 'votes': 3}
+                {'option':'ROSA','number':1,'votes': 100},
+                {'option':'VERDE','number':2, 'votes': 80},
+                {'option':'ROJO','number':3, 'votes': 70},
+                {'option':'AMARILLO','number':4, 'votes': 5},
+                {'option':'AZUL', 'number':5, 'votes': 3}
             ],
-            'escañosTotales': 5
+            'numEscanyos': 5
         }
 
         expected_result = [
-            {'option':'ROSA','votes': 100,'numEscaños': 2},
-            {'option':'VERDE', 'votes': 80,'numEscaños': 2},
-            {'option':'ROJO', 'votes': 70,'numEscaños': 1},
-            {'option':'AMARILLO', 'votes': 5,'numEscaños': 0},
-            {'option':'AZUL', 'votes': 3,'numEscaños': 0}
+            {'option':'ROSA','number':1,'votes': 100,'escanyos': 2},
+            {'option':'VERDE','number':2, 'votes': 80,'escanyos': 2},
+            {'option':'ROJO','number':3, 'votes': 70,'escanyos': 1},
+            {'option':'AMARILLO','number':4, 'votes': 5,'escanyos': 0},
+            {'option':'AZUL','number':5, 'votes': 3,'escanyos': 0}
         ]
 
         result = self.views.metodoHondt(data)
@@ -688,23 +571,23 @@ class PostProcTestCase(APITestCase):
         data = {
             'type': 'HONDT',
             'options': [
-                {'option':'A','votes': 168000},
-                {'option':'B', 'votes': 104000},
-                {'option':'C', 'votes': 72000},
-                {'option':'D', 'votes': 64000},
-                {'option':'E', 'votes': 40000},
-                {'option':'F', 'votes': 32000}
+                {'option':'A','number':1,'votes': 168000},
+                {'option':'B','number':2, 'votes': 104000},
+                {'option':'C','number':3, 'votes': 72000},
+                {'option':'D','number':4, 'votes': 64000},
+                {'option':'E','number':5, 'votes': 40000},
+                {'option':'F','number':6, 'votes': 32000}
             ],
-            'escañosTotales': 8
+            'numEscanyos': 8
         }
 
         expected_result = [
-            {'option':'A','votes': 168000,'numEscaños': 4},
-            {'option':'B', 'votes': 104000,'numEscaños': 2},
-            {'option':'C', 'votes': 72000,'numEscaños': 1},
-            {'option':'D', 'votes': 64000,'numEscaños': 1},
-            {'option':'E', 'votes': 40000,'numEscaños': 0},
-            {'option':'F', 'votes': 32000,'numEscaños': 0}
+            {'option':'A','number':1,'votes': 168000,'escanyos': 4},
+            {'option':'B','number':2, 'votes': 104000,'escanyos': 2},
+            {'option':'C','number':3, 'votes': 72000,'escanyos': 1},
+            {'option':'D','number':4, 'votes': 64000,'escanyos': 1},
+            {'option':'E','number':5, 'votes': 40000,'escanyos': 0},
+            {'option':'F','number':6, 'votes': 32000,'escanyos': 0}
         ]
 
         result = self.views.metodoHondt(data)
@@ -712,50 +595,10 @@ class PostProcTestCase(APITestCase):
         self.assertEqual(result, expected_result)
 
 
-    #Test recuento BORDA. Realizado por Raúl. SI NADIE HA VOTADO A NINGÚN REPRESENTANTE
-    def test_borda3(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': []},
-                {'option': 'Psoe', 'positions': []},
-                {'option': 'Podemos', 'positions': []},
-                {'option': 'Ciudadanos', 'positions': []},
-            ]
-        }
-
-        expected_result = {}
-
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-        self.assertEqual(values, expected_result)
+    
 
 
-    #Test recuento BORDA. Realizado por Raúl. TODOS LOS VOTANTES NO HAN VOTADO A UN REPRESENTANTE,
-    #EN ESTE CASO, AL REPRESENTANTE 'Podemos'
-    def test_borda4(self):
-        data = {
-            'type': 'BORDA',
-            'options': [
-                {'option': 'Popular', 'positions': [1,3,3,4]},
-                {'option': 'Psoe', 'positions': [2,2,1,1]},
-                {'option': 'Podemos', 'positions': []},
-                {'option': 'Ciudadanos', 'positions': [3,4,2,2]},
-            ]
-        }
-
-        expected_result = {}
-        
-
-
-        response = self.client.post('/postproc/', data, format='json')
-        self.assertEqual(response.status_code, 200)
-
-        values = response.json()
-
-        self.assertEqual(values, expected_result)
+   
 
     #TEST IMPERIALI
 
@@ -944,6 +787,108 @@ class PostProcTestCase(APITestCase):
             { 'option': 'A', 'number': 1, 'votes': 10, 'escanyos': 1},
             { 'option': 'E', 'number': 5, 'votes': 1, 'escanyos': 0},
             { 'option': 'G', 'number': 7, 'votes': 0, 'escanyos': 0},
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+
+    def test_borda(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular','number':1, 'positions': [1,1,3,2],'votes': 0},
+                {'option': 'Psoe','number':2, 'positions': [2,3,4,3],'votes': 0},
+                {'option': 'Podemos','number':3, 'positions': [3,4,1,4],'votes': 0},
+                {'option': 'Ciudadanos','number':4, 'positions': [4,2,2,1],'votes': 0},
+            ]
+        }
+
+        expected_result = [
+            {'option': 'Popular','number':1,'positions': [1,1,3,2], 'votes': 13},
+            {'option': 'Psoe','number':2,'positions': [2,3,4,3], 'votes': 8},
+            {'option': 'Podemos','number':3,'positions': [3,4,1,4], 'votes': 8},
+            {'option': 'Ciudadanos','number':4,'positions': [4,2,2,1], 'votes': 11},
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+    def test_borda2(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular','number':1, 'positions': [1],'votes': 0},
+                {'option': 'Psoe','number':2, 'positions': [2],'votes': 0},
+                {'option': 'Podemos','number':3, 'positions': [3],'votes': 0},
+                {'option': 'Ciudadanos','number':4, 'positions': [4],'votes': 0},
+            ]
+        }
+
+        expected_result = [
+            {'option': 'Popular','number':1,'positions': [1], 'votes': 4},
+            {'option': 'Psoe','number':2,'positions': [2], 'votes': 3},
+            {'option': 'Podemos','number':3,'positions': [3], 'votes': 2},
+            {'option': 'Ciudadanos','number':4,'positions': [4], 'votes': 1},
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+    def test_borda3(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular','number':1,'positions': [],'votes': 0},
+                {'option': 'Psoe','number':2,'positions': [],'votes': 0},
+                {'option': 'Podemos','number':3,'positions': [],'votes': 0},
+                {'option': 'Ciudadanos','number':4,'positions': [],'votes': 0},
+            ]
+        }
+
+        expected_result = [
+            {'option': 'Popular','number':1,'positions': [], 'votes': 0},
+            {'option': 'Psoe','number':2,'positions': [], 'votes': 0},
+            {'option': 'Podemos','number':3,'positions': [], 'votes': 0},
+            {'option': 'Ciudadanos','number':4,'positions': [], 'votes': 0},
+        ]
+
+        response = self.client.post('/postproc/', data, format='json')
+        self.assertEqual(response.status_code, 200)
+
+        values = response.json()
+        self.assertEqual(values, expected_result)
+
+
+
+    def test_borda4(self):
+        data = {
+            'type': 'BORDA',
+            'options': [
+                {'option': 'Popular','number':1, 'positions': [1,3,3,4],'votes': 0},
+                {'option': 'Psoe','number':2, 'positions': [2,2,1,1],'votes': 0},
+                {'option': 'Podemos','number':3, 'positions': [],'votes': 0},
+                {'option': 'Ciudadanos','number':4, 'positions': [3,4,2,2],'votes': 0},
+            ]
+        }
+
+        expected_result = [
+            {'option': 'Popular','number':1,'positions': [1,3,3,4], 'votes': 0},
+            {'option': 'Psoe','number':2,'positions': [2,2,1,1], 'votes': 0},
+            {'option': 'Podemos','number':3,'positions': [], 'votes': 0},
+            {'option': 'Ciudadanos','number':4,'positions': [3,4,2,2], 'votes': 0},
         ]
 
         response = self.client.post('/postproc/', data, format='json')
